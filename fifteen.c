@@ -198,11 +198,11 @@ print_frame(void)
      move(1, 0);
      for(i = 0; i < CASE; ++i)
      {
-          addch('|');
+          addch('[');
           attron(COLOR_PAIR(1));
           printw(((frame[i]) ? "%.2d" : "  "), frame[i]);
           attroff(COLOR_PAIR(1));
-          addch('|');
+          addch(']');
 
           if(i > 0 && !((i + 1) % option.rows))
                addch('\n');
@@ -220,46 +220,35 @@ main(int argc, char **argv)
 
      struct option long_options[] =
           {
-               {"help",     0, NULL, 'h'},
-               {"lines",    0, NULL, 'l'},
-               {"rows",     0, NULL, 'r'},
-               {NULL,       0, NULL, 0}
+               {"help",  0, NULL, 'h'},
+               {"lines", 0, NULL, 'l'},
+               {"rows",  0, NULL, 'r'},
+               {NULL,    0, NULL, 0}
           };
 
      while ((c = getopt_long(argc, argv, "hl:r:",
                              long_options, NULL)) != -1)
      {
-          switch(c)
+          if(c == 'l' || c == 'r')
           {
-          case 'h':
-          default:
+               if(atoi(optarg) <= 9
+                  && atoi(optarg) > 1)
+                    ((c == 'l') ? (option.lines = atoi(optarg)): (option.rows = atoi(optarg)));
+               else
+               {
+                    fprintf(stderr, "tty-fifteen: Maximum %1$s: 9, Minimum %1$s: 2.\n",
+                            ((c == 'l') ? "lines" : "rows"));
+                    exit(EXIT_FAILURE);
+               }
+          }
+          else
+          {
                fprintf(stderr, "usage: %s [-option ...]\n"
                        "options:\n"
                        "   --help  -h         Show help.\n"
                        "   --lines -l [2-9]   Set the frame lines.\n"
                        "   --rows  -r [2-9]   Set the frame rows.\n\n", argv[0]);
                exit(EXIT_SUCCESS);
-               break;
-          case 'l':
-               if(atoi(optarg) <= 9
-                  && atoi(optarg) > 1)
-                    option.lines = atoi(optarg);
-               else
-               {
-                    fprintf(stderr, "tty-fifteen: Maximum lines: 9, Minimum lines: 2.\n");
-                    exit(EXIT_FAILURE);
-               }
-               break;
-          case 'r':
-               if(atoi(optarg) <= 9
-                  && atoi(optarg) > 1)
-                    option.rows = atoi(optarg);
-               else
-               {
-                    fprintf(stderr, "tty-fifteen: Maximum rows: 9, Minimum rows: 2.\n");
-                    exit(EXIT_FAILURE);
-               }
-               break;
           }
      }
 
