@@ -218,16 +218,7 @@ main(int argc, char **argv)
 {
      int c;
 
-     struct option long_options[] =
-          {
-               {"help",  0, NULL, 'h'},
-               {"lines", 0, NULL, 'l'},
-               {"rows",  0, NULL, 'r'},
-               {NULL,    0, NULL, 0}
-          };
-
-     while ((c = getopt_long(argc, argv, "hl:r:",
-                             long_options, NULL)) != -1)
+     while((c = getopt(argc, argv, "hl:r:")) != -1)
      {
           if(c == 'l' || c == 'r')
           {
@@ -238,16 +229,16 @@ main(int argc, char **argv)
                {
                     fprintf(stderr, "tty-fifteen: Maximum %1$s: 9, Minimum %1$s: 2.\n",
                             ((c == 'l') ? "lines" : "rows"));
-                    exit(EXIT_FAILURE);
+                   exit(EXIT_FAILURE);
                }
           }
           else
           {
                fprintf(stderr, "usage: %s [-option ...]\n"
                        "options:\n"
-                       "   --help  -h         Show help.\n"
-                       "   --lines -l [2-9]   Set the frame lines.\n"
-                       "   --rows  -r [2-9]   Set the frame rows.\n\n", argv[0]);
+                       "    -h         Show help.\n"
+                       "    -l [2-9]   Set the frame lines.\n"
+                       "    -r [2-9]   Set the frame rows.\n\n", argv[0]);
                exit(EXIT_SUCCESS);
           }
      }
