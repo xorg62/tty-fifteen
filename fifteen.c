@@ -48,7 +48,7 @@ struct fifteen_option
 int running = 1;
 int *frame = NULL;
 int vpos;
-long moves = 0;
+unsigned long moves = 0;
 
 void init(void);
 void random_frame(void);
@@ -132,7 +132,6 @@ check_victory(void)
           mvprintw(2, option.rows * 5, "WIN !");
           attroff(COLOR_PAIR(2));
           running = 0;
-          while(getch() < 0);
      }
 
      return;
@@ -181,7 +180,14 @@ key_event(void)
                swap(frame[vpos - 1]);
           break;
      case 'q':
+     case 'Q':
           running = 0;
+          break;
+     case 'r':
+     case 'R':
+          running = 1;
+          random_frame();
+          moves = 0;
           break;
      default:
           break;
@@ -249,8 +255,8 @@ main(int argc, char **argv)
      while(running)
      {
           print_frame();
-          key_event();
           check_victory();
+          key_event();
      }
 
      endwin();
