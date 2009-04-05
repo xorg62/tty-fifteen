@@ -50,6 +50,13 @@ int *frame = NULL;
 int vpos;
 long moves = 0;
 
+void init(void);
+void random_frame(void);
+void check_victory(void);
+void swap(int n);
+void key_event(void);
+void print_frame(void);
+
 void
 init(void)
 {
@@ -68,6 +75,7 @@ init(void)
 
      init_pair(0, bg, bg);
      init_pair(1, COLOR_GREEN, bg);
+     init_pair(2, COLOR_RED, bg);
 
      refresh();
      srand(getpid());
@@ -108,15 +116,20 @@ check_victory(void)
 {
      int i, c = 0;
 
+     /* Check the frame order */
      for(i = 1; i < CASE; ++i)
           if(frame[i - 1] == i)
                ++c;
 
+     /* Win \o/ */
      if(c == i - 1)
      {
-          endwin();
-          printf("WIN \\o/\n");
-          exit(0);
+          print_frame();
+          attron(COLOR_PAIR(2));
+          mvprintw(2, option.rows * 5, "WIN !");
+          attroff(COLOR_PAIR(2));
+          running = 0;
+          while(getch() < 0);
      }
 
      return;
@@ -253,8 +266,8 @@ main(int argc, char **argv)
      while(running)
      {
           print_frame();
-          check_victory();
           key_event();
+          check_victory();
      }
 
      endwin();
