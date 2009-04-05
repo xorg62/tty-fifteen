@@ -164,18 +164,26 @@ key_event(void)
      switch((c = getch()))
      {
      case KEY_UP:
+     case 'k':
+     case 'K':
           if((vpos + option.rows) < CASE)
                swap(frame[vpos + option.rows]);
           break;
      case KEY_DOWN:
+     case 'j':
+     case 'J':
           if((vpos - option.rows) >= 0)
                swap(frame[vpos - option.rows]);
           break;
      case KEY_LEFT:
+     case 'h':
+     case 'H':
           if((vpos + 1) % option.rows != 0 && (vpos + 1) < CASE)
                swap(frame[vpos + 1]);
           break;
      case KEY_RIGHT:
+     case 'l':
+     case 'L':
           if(vpos % option.rows)
                swap(frame[vpos - 1]);
           break;
@@ -235,7 +243,7 @@ main(int argc, char **argv)
                {
                     fprintf(stderr, "tty-fifteen: Maximum %1$s: 9, Minimum %1$s: 2.\n",
                             ((c == 'l') ? "lines" : "rows"));
-                   exit(EXIT_FAILURE);
+                    exit(EXIT_FAILURE);
                }
           }
           else
