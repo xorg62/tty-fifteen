@@ -88,17 +88,20 @@ init(void)
 void
 random_frame(void)
 {
-     int i, j, n;
+     int i, j, n, k = 0;
 
      /* Set the frame case */
      for(i = 0; i < CASE; ++i)
      {
-
-     lbl:
-          n = RAND(0, CASE - 1);
-          for(j = 0; j < i; ++j)
-               if(frame[j] == n)
-                    goto lbl;
+          do
+          {
+               k = 0;
+               n = RAND(0, CASE - 1);
+               for(j = 0; j < i; ++j)
+                    if(frame[j] == n)
+                         ++k;
+          }
+          while(k);
 
           frame[i] = n;
      }
