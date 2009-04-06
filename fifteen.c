@@ -128,9 +128,11 @@ check_victory(void)
      if(c == i - 1)
      {
           print_frame();
+          attrset(A_UNDERLINE);
           attron(COLOR_PAIR(2));
-          mvprintw(2, option.rows * 5, "WIN !");
+          mvprintw(2, (option.rows * 4) + 2, "WIN !");
           attroff(COLOR_PAIR(2));
+          attrset(A_NORMAL);
           running = 0;
      }
 
@@ -222,7 +224,10 @@ print_frame(void)
                addch('\n');
      }
 
-     mvprintw(1, option.rows * 5, "Moves: %d", moves);
+     mvaddstr(1, (option.rows * 4) + 2, "Moves: ");
+     attron(COLOR_PAIR(1));
+     printw("%d", moves);
+     attroff(COLOR_PAIR(1));
 
      return;
 }
@@ -238,7 +243,7 @@ main(int argc, char **argv)
           {
                if(atoi(optarg) <= 9
                   && atoi(optarg) > 1)
-                    ((c == 'l') ? (option.lines = atoi(optarg)): (option.rows = atoi(optarg)));
+                    ((c == 'l') ? (option.lines = atoi(optarg)) : (option.rows = atoi(optarg)));
                else
                {
                     fprintf(stderr, "tty-fifteen: Maximum %1$s: 9, Minimum %1$s: 2.\n",
