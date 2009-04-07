@@ -214,11 +214,16 @@ print_frame(void)
      move(1, 0);
      for(i = 0; i < CASE; ++i)
      {
-          addch('[');
-          attron(COLOR_PAIR(1));
-          printw(((frame[i]) ? "%.2d" : "  "), frame[i]);
-          attroff(COLOR_PAIR(1));
-          addch(']');
+          if(frame[i])
+          {
+               addch('[');
+               attron(COLOR_PAIR(1));
+               printw("%.2d", frame[i]);
+               attroff(COLOR_PAIR(1));
+               addch(']');
+          }
+          else
+               printw("    ");
 
           if(i > 0 && !((i + 1) % option.rows))
                addch('\n');
